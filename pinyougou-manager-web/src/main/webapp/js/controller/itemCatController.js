@@ -76,5 +76,34 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 			}			
 		);
 	}
-    
+
+	//面包页铲鲟回显
+
+	$scope.findByParentId=function (parentId) {
+		itemCatService.findByParentId(parentId).success(function (response) {
+			$scope.list=response;
+        });
+    }
+
+    //chaxuncishu
+    $scope.grade=1;//默认为1级
+    //设置级别
+    $scope.setGrade=function(value){
+        $scope.grade=value;
+    }
+
+
+    $scope.selectList=function (P_entity) {
+		if ($scope.grade==1){
+			$scope.entity_1=null;
+            $scope.entity_2=null;
+		} else if($scope.grade==2){
+            $scope.entity_1=P_entity;
+            $scope.entity_2=null;
+		}else if ($scope.grade==3){
+            $scope.entity_=P_entity;
+		}
+        $scope.findByParentId(P_entity.id);
+    }
+
 });	

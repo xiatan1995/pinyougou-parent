@@ -16,6 +16,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="dame" target="1.7" />
       <module name="pinyougou-manager-web" target="1.7" />
       <module name="pinyougou-parent" target="1.7" />
       <module name="pinyougou-sellergoods-interface" target="1.7" />
@@ -24,6 +25,7 @@
       <module name="pinyougoucommon" target="1.7" />
       <module name="pinyougoudao" target="1.7" />
       <module name="pinyougoupojo" target="1.7" />
+      <module name="stringscuritydome" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>

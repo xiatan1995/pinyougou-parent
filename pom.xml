@@ -16,6 +16,7 @@
         <module>pinyougou-sellergoods-service</module>
         <module>pinyougou-manager-web</module>
         <module>pinyougou-shop-web</module>
+
     </modules>
 
 
