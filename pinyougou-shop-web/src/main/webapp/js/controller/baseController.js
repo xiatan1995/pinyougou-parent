@@ -45,5 +45,32 @@ app.controller('baseController' ,function($scope){
 				
 		return value;
 	}
-	
+
+
+
+	//属性复选框
+
+	// $scope.searchObjectByKey=function (list, key, value) {
+	//
+	// 	for (var i=0;i<list.length;i++){
+	//
+	// 		if (list[i][key]==value){
+	// 			//要返回已添加的数据
+	// 			return list[i];
+	// 		}
+	// 	}
+    //     return null;
+    // }
+
+    $scope.searchObjectByKey=function(list,key,keyValue){
+        for(var i=0;i<list.length;i++){
+            if(list[i][key]==keyValue){
+                return list[i];
+            }
+        }
+        return null;
+    }
+
+
+
 });	

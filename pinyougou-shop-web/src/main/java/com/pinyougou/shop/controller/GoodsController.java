@@ -51,10 +51,10 @@ public class GoodsController {
 	@RequestMapping("/add")
 	public Result add(@RequestBody Goods goods){
 
+		System.out.println(goods);
 		String sellerid = SecurityContextHolder.getContext().getAuthentication().getName();
-
+		goods.getGoods().setSellerId(sellerid);
 		try {
-			goods.getGoods().setSellerId(sellerid);
 			goodsService.add(goods);
 			return new Result(true, "增加成功");
 		} catch (Exception e) {

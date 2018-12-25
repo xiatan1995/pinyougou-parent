@@ -32,22 +32,39 @@ app.controller('goodsController' ,function($scope,$controller ,uploadService  ,g
 	}
 	
 	//保存 
-	$scope.add=function(){
-		goodsService.add().success(
-			function(response){
+	// $scope.add=function(){
+	// 	goodsService.add().success(
+	// 		function(response){
+	//
+    //             $scope.entity.goodsDesc.introduction=editor.html();
+	// 			if(response.success){
+	// 				//重新查询
+	// 	        	alert("添加成功");
+	// 	        	$scope.entity={};
+    //                 editor.html("");
+	// 			}else{
+	// 				alert(response.message);
+	// 			}
+	// 		}
+	// 	);
+	// }
 
-                $scope.entity.goodsDesc.introduction=editor.html();
-				if(response.success){
-					//重新查询 
-		        	alert("添加成功");
-		        	$scope.entity={};
-                    editor.html("");
-				}else{
-					alert(response.message);
-				}
-			}		
-		);				
-	}
+    $scope.add=function(){
+        $scope.entity.goodsDesc.introduction=editor.html();
+        alert($scope.entity);
+        goodsService.add( $scope.entity ).success(
+
+            function(response){
+                if(response.success){
+                    alert("新增成功");
+                    $scope.entity={};
+                    editor.html("");//清空富文本编辑器
+                }else{
+                    alert(response.message);
+                }
+            }
+        );
+    }
 	
 	 
 	//批量删除 
@@ -78,13 +95,25 @@ app.controller('goodsController' ,function($scope,$controller ,uploadService  ,g
 
 	//图片上传
 	$scope.uploadFile=function () {
-		uploadService.upload().success(function (responce) {
-			if (responce.success) {
-				$scope.image_entity.url=responce.message;
+		uploadService.uploadFile().success(function (response) {
+			if (response.success) {
+				$scope.image_entity.url=response.jieguo;
 			}else{
-				alert(responce.message);
+				alert(response.jieguo);
 			}
         });
+    }
+
+    //图片列表
+
+    $scope.entity={goods:{},goodsDesc:{itemImages:[]}};
+
+	$scope.add_image_entity=function () {
+		$scope.entity.goodsDesc.itemImages.push($scope.image_entity);
+    }
+
+    $scope.remove_image_entity=function (index) {
+		$scope.entity.goodsDesc.itemImages.splice(index,1);
     }
     
 });	
