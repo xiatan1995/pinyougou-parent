@@ -173,46 +173,93 @@ app.controller('goodsController' ,function($scope,$controller ,uploadService,typ
 
 	//商品复选框选中的值
 
-	// $scope.updateSpecAttribute=function ($event,name, value) {
-	//
-	//
-	// var object=$scope.searchObjectByKey($scope.entity.goodsDesc.specificationItems,name,value);
-	//
-	// if (object!=null){
-    //     if ($event.target.checked){
-    //         object.attributeValue.push(value);
-	// 		}else{
-    //             object.attributeValue.splice(object.attributeValue.indexOf(value),1);
-    //             if ( object.attributeValue.length==0){
-    //                 $scope.entity.goodsDesc.specificationItems.splice($scope.entity.goodsDesc.specificationItems.indexOf(name),1)
-    //
-	// 		}
-	// 	}
-	// } else {
-	//
-    //     $scope.entity.goodsDesc.specificationItems.push({"attributeName":name,"attributeValue":[value]});
-	//
-	// }
-    // }
-    $scope.updateSpecAttribute=function($event,name,value){
-        var object= $scope.searchObjectByKey(
-            $scope.entity.goodsDesc.specificationItems ,'attributeName', name);
-        if(object!=null){
-            if($event.target.checked ){
-                object.attributeValue.push(value);
-            }else{//取消勾选				object.attributeValue.splice( object.attributeValue.indexOf(value ) ,1);//移除选项
-                //如果选项都取消了，将此条记录移除
-                if(object.attributeValue.length==0){
-                    $scope.entity.goodsDesc.specificationItems.splice(
-                        $scope.entity.goodsDesc.specificationItems.indexOf(object),1);
-                }
-            }
-        }else{
-            $scope.entity.goodsDesc.specificationItems.push(
-                {"attributeName":name,"attributeValue":[value]});
-        }
+	$scope.updateSpecAttribute=function ($event,name, value) {
+
+
+	var object=$scope.searchObjectByKey($scope.entity.goodsDesc.specificationItems,'attributeName',name);
+
+	if (object!=null){
+        if ($event.target.checked){
+            object.attributeValue.push(value);
+			}else{
+                object.attributeValue.splice(object.attributeValue.indexOf(value),1);
+                if ( object.attributeValue.length==0){
+                    $scope.entity.goodsDesc.specificationItems.splice($scope.entity.goodsDesc.specificationItems.indexOf(name),1)
+
+			}
+		}
+	} else {
+
+        $scope.entity.goodsDesc.specificationItems.push({"attributeName":name,"attributeValue":[value]});
+
+	}
     }
 
+
+
+    $scope.createItemList=function () {
+
+	    $scope.entity.itemList=[{spec:{},price:0,num:1234,status:'0',isDefault:'0'}];//初始化
+
+
+        var items=$scope.entity.goodsDesc.specificationItems;
+
+        //王entity。itemlist存数据,增加列
+        for (var i=0;i<items.length;i++){
+
+
+            $scope.entity.itemList=addColumn($scope.entity.itemList,items[i].attributeName,items[i].attributeValue);
+
+        }
+
+    }
+
+
+    addColumn=function (list, columnName, conlumnValues) {
+
+	    var newList=[];
+
+	    for (var i=0;i<list.length;i++){
+	        var oldRow=list[i];
+	        //为什么要使用克隆，因为每次循环时都要增加记录
+
+	        for (var j=0;j<conlumnValues.length;j++){
+	            //需要多次使用list[i]，在forj的每次循环中每次的list[i]必须是同一个值
+	            //如果在这直接使用oldRow的话，第一次循环值改变以后第二次就没有了原来的list[i]
+	            var newRow=JSON.parse(JSON.stringify(oldRow));//深度克隆
+
+                newRow.spec[columnName]=conlumnValues[j];
+
+                newList.push(newRow);
+
+            }
+        }
+
+	    return newList;
+
+    }
+
+
+
+    //审核状态封装
+
+	$scope.status=['未审核','已审核','审核未通过','关闭'];
+
+
+	//添加分类级别
+
+	$scope.itemCatList=[];
+
+	$scope.findItemCatList=function () {
+
+		itemCatService.findAll().success(function (response) {
+			for (var i=0;i<response.length;i++){
+                $scope.itemCatList[response[i].id]=response[i].name;
+			}
+
+        });
+    }
+    
 
 
 
