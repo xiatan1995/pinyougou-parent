@@ -78,12 +78,12 @@ app.controller('contentController' ,function($scope,$controller ,uploadService ,
 	}
 
 
-    $scope.contentimg={};
+
 
 	$scope.uploadFile=function () {
         uploadService.uploadFile().success(function (response) {
         	if (response.success){
-        		$scope.contentimg.url=response.jieguo;
+        		$scope.entity.pic=response.jieguo;
 			} else{
         		alert(response.jieguo);
 
@@ -95,8 +95,10 @@ app.controller('contentController' ,function($scope,$controller ,uploadService ,
 
         //下拉列表
         $scope.contentCategoryList=function () {
+        	alert(1);
             contentCategoryService.findAll().success(function (response) {
 
+            	alert(response);
             	$scope.contentCategoryList=response;
             })
         }
