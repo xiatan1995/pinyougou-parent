@@ -1,5 +1,5 @@
  //控制层 
-app.controller('contentController' ,function($scope,$controller   ,contentService){	
+app.controller('contentController' ,function($scope,$controller ,uploadService ,contentCategoryService ,contentService){
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
@@ -76,5 +76,35 @@ app.controller('contentController' ,function($scope,$controller   ,contentServic
 			}			
 		);
 	}
+
+
+    $scope.contentimg={};
+
+	$scope.uploadFile=function () {
+        uploadService.uploadFile().success(function (response) {
+        	if (response.success){
+        		$scope.contentimg.url=response.jieguo;
+			} else{
+        		alert(response.jieguo);
+
+			}
+        }).error(function () {
+        	alert("上传出错");
+
+        });
+
+        //下拉列表
+        $scope.contentCategoryList=function () {
+            contentCategoryService.findAll().success(function (response) {
+
+            	$scope.contentCategoryList=response;
+            })
+        }
+
+    }
+
+    //状态显示
+	$scope.status=["无效","有效"];
+
     
 });	

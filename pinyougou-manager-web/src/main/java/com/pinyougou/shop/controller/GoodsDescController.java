@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.pojo.TbGoodsDesc;
-import com.pinyougou.sellergoods.service.GoodsDescService;
+import com.pinyougou.content.service.GoodsDescService;
 
 /**
  * controller

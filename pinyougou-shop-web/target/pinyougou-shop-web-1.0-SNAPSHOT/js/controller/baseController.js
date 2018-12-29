@@ -49,7 +49,6 @@ app.controller('baseController' ,function($scope){
 
 
 	//属性复选框
-
 	$scope.searchObjectByKey=function (list, key, value) {
 
 		for (var i=0;i<list.length;i++){

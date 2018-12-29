@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.pojo.TbGoods;
-import com.pinyougou.sellergoods.service.GoodsService;
+import com.pinyougou.content.service.GoodsService;
 
 /**
  * controller
@@ -69,7 +69,13 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/update")
-	public Result update(@RequestBody TbGoods goods){
+	public Result update(@RequestBody Goods goods){
+		String name = SecurityContextHolder.getContext().getAuthentication().getName();
+		Long id = goods.getGoods().getId();
+		Goods goods1 = goodsService.findOne(id);
+		if (!goods.getGoods().getSellerId().equals(name)||goods1.getGoods().getSellerId().equals(name)){
+			new Result(false,"非法操作");
+		}
 		try {
 			goodsService.update(goods);
 			return new Result(true, "修改成功");
@@ -85,7 +91,7 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/findOne")
-	public TbGoods findOne(Long id){
+	public Goods findOne(Long id){
 		return goodsService.findOne(id);		
 	}
 	

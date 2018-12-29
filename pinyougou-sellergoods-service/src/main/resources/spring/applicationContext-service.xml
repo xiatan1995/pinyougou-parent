@@ -2,7 +2,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
         http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
@@ -11,7 +12,10 @@
     <dubbo:protocol name="dubbo" port="20881"></dubbo:protocol>
 	<dubbo:application name="pinyougou-sellergoods-service"/>  
     <dubbo:registry address="zookeeper://192.168.25.131:2181"/>
-    <dubbo:annotation package="com.pinyougou.sellergoods.service.impl" />  
-   
-   
-</beans>
+    <dubbo:annotation package="com.pinyougou.content.service.impl" />
+
+	<!-- 事务管理器  -->
+
+
+
+		</beans>

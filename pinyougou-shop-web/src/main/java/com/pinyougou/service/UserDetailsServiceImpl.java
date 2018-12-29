@@ -1,7 +1,6 @@
 package com.pinyougou.service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -12,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.pinyougou.pojo.TbSeller;
-import com.pinyougou.sellergoods.service.SellerService;
+import com.pinyougou.content.service.SellerService;
 /**
  * 认证类
  * @author Administrator

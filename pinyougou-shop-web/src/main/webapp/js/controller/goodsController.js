@@ -1,5 +1,5 @@
  //控制层 
-app.controller('goodsController' ,function($scope,$controller ,uploadService,typeTemplateService,goodsService,itemCatService){
+app.controller('goodsController' ,function($scope,$controller,$location ,uploadService,typeTemplateService,goodsService,itemCatService){
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
@@ -23,10 +23,33 @@ app.controller('goodsController' ,function($scope,$controller ,uploadService,typ
 	}
 	
 	//查询实体 
-	$scope.findOne=function(id){				
-		goodsService.findOne(id).success(
+	$scope.findOne=function(){
+		var id=$location.search()['id'];
+		if (id==null){
+			return ;
+		}
+    goodsService.findOne(id).success(
 			function(response){
-				$scope.entity= response;					
+				$scope.entity= response;
+                //向富文本编辑器添加商品介绍
+                editor.html($scope.entity.goodsDesc.introduction);
+
+                //商品图片片
+                $scope.entity.goodsDesc.itemImages=JSON.parse($scope.entity.goodsDesc.itemImages);
+
+				//扩展属性
+				$scope.entity.goodsDesc.customAttributeItems=JSON.parse($scope.entity.goodsDesc.customAttributeItems);
+
+				//规格选择
+				$scope.entity.goodsDesc.specificationItems=JSON.parse($scope.entity.goodsDesc.specificationItems);
+
+				for (var i=0;i<$scope.entity.goodsDesc.specificationItems.length;i++) {
+					$scope.entity.itemList[i].spec=JSON.parse($scope.entity.itemList[i].spec);
+
+				}
+
+
+
 			}
 		);				
 	}
@@ -153,6 +176,7 @@ app.controller('goodsController' ,function($scope,$controller ,uploadService,typ
 
 	$scope.$watch('entity.goods.typeTemplateId',function (newValue, oldValue) {
 
+		//从模块里查寻品牌列表
 		typeTemplateService.findOne(newValue).success(function (response) {
 
 			$scope.typeTemplate=response;
@@ -259,6 +283,36 @@ app.controller('goodsController' ,function($scope,$controller ,uploadService,typ
 
         });
     }
+
+
+    //添加规格回显勾选的显示的方法
+
+	$scope.checkAttributeValue=function (specName,optionName) {
+		var items=$scope.entity.goodsDesc.specificationItems;
+
+		var object=$scope.searchObjectByKey(items,'attributeName',specName);
+		
+		
+		if (object!=null){
+		if (object.attributeValue.indexOf(optionName)>=0){
+			return true;
+		} 	else {
+
+			return false;
+		}
+			
+		} else {
+
+			return false;
+
+        }
+    }
+
+
+
+
+
+
     
 
 
