@@ -82,7 +82,7 @@
 
         <dependency>
             <groupId>com.pinyougou</groupId>
-            <artifactId>pinyougou-content-service</artifactId>
+            <artifactId>pinyougou-common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
@@ -91,7 +91,6 @@
             <artifactId>pinyougou-contet-interface</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-
     </dependencies>
 
 

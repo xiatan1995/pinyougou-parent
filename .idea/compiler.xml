@@ -13,6 +13,7 @@
         <module name="pinyougou-sellergoods-interface" />
         <module name="pinyougou-sellergoods-service" />
         <module name="pinyougou-shop-web" />
+        <module name="pinyougou-sole-utli" />
         <module name="pinyougoucommon" />
         <module name="pinyougoudao" />
         <module name="pinyougoupojo" />
@@ -29,6 +30,7 @@
       <module name="pinyougou-sellergoods-interface" target="1.7" />
       <module name="pinyougou-sellergoods-service" target="1.7" />
       <module name="pinyougou-shop-web" target="1.7" />
+      <module name="pinyougou-sole-utli" target="1.7" />
       <module name="pinyougoucommon" target="1.7" />
       <module name="pinyougoudao" target="1.7" />
       <module name="pinyougoupojo" target="1.7" />

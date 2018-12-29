@@ -19,6 +19,7 @@
         <module>pinyougou-contet-interface</module>
         <module>pinyougou-portal-web</module>
         <module>pinyougou-content-service</module>
+        <module>pinyougou-sole-utli</module>
 
 
     </modules>

@@ -1,14 +1,14 @@
 package com.pinyougou.shop.controller;
 import java.util.List;
 
+import com.pinyougou.content.service.ContentService;
 import com.pinyougou.entity.PageResult;
 import com.pinyougou.entity.Result;
+import com.pinyougou.pojo.TbContent;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.pinyougou.pojo.TbContent;
-import com.pinyougou.content.service.ContentService;
 
 /**
  * controller
@@ -27,7 +27,7 @@ public class ContentController {
 	 * @return
 	 */
 	@RequestMapping("/findAll")
-	public List<TbContent> findAll(){			
+	public List<TbContent> findAll(){
 		return contentService.findAll();
 	}
 	
@@ -101,7 +101,7 @@ public class ContentController {
 	
 		/**
 	 * 查询+分页
-	 * @param brand
+	 * @param
 	 * @param page
 	 * @param rows
 	 * @return

@@ -1,10 +1,8 @@
 package com.pinyougou.content.service;
-
 import java.util.List;
 
 import com.pinyougou.entity.PageResult;
 import com.pinyougou.pojo.TbContent;
-
 
 /**
  * 服务层接口
@@ -12,15 +10,6 @@ import com.pinyougou.pojo.TbContent;
  *
  */
 public interface ContentService {
-
-	/**
-	 * 缓存
-	 * @param categoryId
-	 * @return
-	 */
-
-
-	public List<TbContent> findByCategoryId(Long categoryId);
 
 	/**
 	 * 返回全部列表
@@ -69,5 +58,10 @@ public interface ContentService {
 	 * @return
 	 */
 	public PageResult findPage(TbContent content, int pageNum, int pageSize);
-	
+
+	/**
+	 * 前台轮播图查询
+	 *
+	 */
+	public List<TbContent> findByCategoryId(Long cateoryid);
 }

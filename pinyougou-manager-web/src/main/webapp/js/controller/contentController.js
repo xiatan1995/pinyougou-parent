@@ -77,36 +77,28 @@ app.controller('contentController' ,function($scope,$controller ,uploadService ,
 		);
 	}
 
-
-
-
-	$scope.uploadFile=function () {
+    $scope.uploadFile=function () {
         uploadService.uploadFile().success(function (response) {
-        	if (response.success){
-        		$scope.entity.pic=response.jieguo;
-			} else{
-        		alert(response.jieguo);
+            if (response.success){
+                $scope.entity.pic=response.jieguo;
+            } else{
+                alert(response.jieguo);
 
-			}
+            }
         }).error(function () {
-        	alert("上传出错");
+            alert("上传出错");
 
         });
 
-        //下拉列表
-        $scope.contentCategoryList=function () {
-        	alert(1);
-            contentCategoryService.findAll().success(function (response) {
-
-            	alert(response);
-            	$scope.contentCategoryList=response;
-            })
-        }
-
+    }
+    //下拉列表
+    $scope.contentCategoryList=function () {
+        contentCategoryService.findAll().success(function (response) {
+            $scope.contentCategoryList=response;
+        })
     }
 
     //状态显示
-	$scope.status=["无效","有效"];
-
+    $scope.status=["无效","有效"];
     
 });	

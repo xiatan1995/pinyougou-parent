@@ -2,14 +2,12 @@ package com.pinyougou.content.service.impl;
 import java.util.List;
 
 import com.pinyougou.entity.PageResult;
+import com.pinyougou.pojo.TbContent;
 import org.springframework.beans.factory.annotation.Autowired;
-
-
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.pinyougou.mapper.TbContentMapper;
-import com.pinyougou.pojo.TbContent;
 import com.pinyougou.pojo.TbContentExample;
 import com.pinyougou.pojo.TbContentExample.Criteria;
 import com.pinyougou.content.service.ContentService;
@@ -50,30 +48,27 @@ public class ContentServiceImpl implements ContentService {
 	 */
 	@Override
 	public void add(TbContent content) {
+		Long categoryId = contentMapper.selectByPrimaryKey(content.getId()).getCategoryId();
+		redisTemplate.boundHashOps("content").delete(categoryId);
 		contentMapper.insert(content);
-		//清除缓存
-		redisTemplate.boundHashOps("content").delete(content.getCategoryId());
+
+		if(categoryId.longValue()!=content.getCategoryId().longValue()){
+			redisTemplate.boundHashOps("content").delete(content.getCategoryId());
+		}
+
+
 	}
 
 	
 	/**
 	 * 修改
 	 */
-
 	@Override
 	public void update(TbContent content){
-		//查询原来的分组ID
-		Long categoryId = contentMapper.selectByPrimaryKey(content.getId()).getCategoryId();
-		//清除原分组的缓存
-		redisTemplate.boundHashOps("content").delete(categoryId);
 
+		redisTemplate.boundHashOps("content").delete(content.getCategoryId());
 		contentMapper.updateByPrimaryKey(content);
-		//清除现分组缓存
-		if(categoryId.longValue()!=content.getCategoryId().longValue()){
-			redisTemplate.boundHashOps("content").delete(content.getCategoryId());
-		}
-
-	}
+	}	
 	
 	/**
 	 * 根据ID获取实体
@@ -91,12 +86,10 @@ public class ContentServiceImpl implements ContentService {
 	@Override
 	public void delete(Long[] ids) {
 		for(Long id:ids){
-			//清除缓存
 			Long categoryId = contentMapper.selectByPrimaryKey(id).getCategoryId();
 			redisTemplate.boundHashOps("content").delete(categoryId);
-
 			contentMapper.deleteByPrimaryKey(id);
-		}
+		}		
 	}
 	
 	
@@ -123,29 +116,28 @@ public class ContentServiceImpl implements ContentService {
 	
 		}
 		
-		Page<TbContent> page= (Page<TbContent>)contentMapper.selectByExample(example);		
+		Page<TbContent> page= (Page<TbContent>)contentMapper.selectByExample(example);
 		return new PageResult(page.getTotal(), page.getResult());
 	}
-		
+
 	@Autowired
 	private RedisTemplate redisTemplate;
 
+
 	@Override
-	public List<TbContent> findByCategoryId(Long categoryId) {
+	public List<TbContent> findByCategoryId(Long cateoryid) {
 
-		List<TbContent> list = (List<TbContent>) redisTemplate.boundHashOps("content").get(categoryId);
+		List<TbContent> list= (List<TbContent>) redisTemplate.boundHashOps("content").get(cateoryid);
 
-		if(list==null){
-			System.out.println("从数据库中查询数据并放入缓存 ");
+		if (list==null){
 			TbContentExample example=new TbContentExample();
 			Criteria criteria = example.createCriteria();
-			criteria.andCategoryIdEqualTo(categoryId);//指定条件:分类ID
-			criteria.andStatusEqualTo("1");//指定条件：有效
-			example.setOrderByClause("sort_order");//排序
+			criteria.andCategoryIdEqualTo(cateoryid);
+			criteria.andStatusEqualTo("1");
+			example.setOrderByClause("sort_order");
 			list = contentMapper.selectByExample(example);
-			redisTemplate.boundHashOps("content").put(categoryId, list);//放入缓存
-		}else{
-			System.out.println("从缓存中查询数据 ");
+			redisTemplate.boundHashOps("content").put(cateoryid,list);
+
 		}
 
 		return list;
