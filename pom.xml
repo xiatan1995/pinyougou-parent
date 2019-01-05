@@ -20,8 +20,9 @@
         <module>pinyougou-portal-web</module>
         <module>pinyougou-content-service</module>
         <module>pinyougou-sole-utli</module>
-
-
+        <module>pinyougou-search-interface</module>
+        <module>pinyougou-search-service</module>
+        <module>pinyougou-search-web</module>
     </modules>
 
 

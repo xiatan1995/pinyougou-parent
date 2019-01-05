@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.pinyougou.entity.PageResult;
 import com.pinyougou.mapper.TbSpecificationOptionMapper;
 import com.pinyougou.pojo.TbSpecificationOption;
@@ -16,6 +17,7 @@ import com.pinyougou.pojo.TbTypeTemplate;
 import com.pinyougou.pojo.TbTypeTemplateExample;
 import com.pinyougou.pojo.TbTypeTemplateExample.Criteria;
 import com.pinyougou.content.service.TypeTemplateService;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -85,6 +87,32 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 			typeTemplateMapper.deleteByPrimaryKey(id);
 		}		
 	}
+
+
+	@Autowired
+	private RedisTemplate redisTemplate;
+
+
+	//存入缓存
+
+	private void saveToRedis(){
+
+		List<TbTypeTemplate> list = findAll();
+
+		for (TbTypeTemplate typeTemplate : list) {
+
+			List<Map> brandList = JSON.parseArray(typeTemplate.getBrandIds(),Map.class);
+
+			redisTemplate.boundHashOps("brandList").put(typeTemplate.getId(),brandList);
+
+			List<Map> specList = findSpecList(typeTemplate.getId());
+
+			redisTemplate.boundHashOps("specList").put(typeTemplate.getId(), specList);
+
+		}
+
+	}
+
 	
 	
 		@Override
@@ -110,7 +138,11 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 	
 		}
 		
-		Page<TbTypeTemplate> page= (Page<TbTypeTemplate>)typeTemplateMapper.selectByExample(example);		
+		Page<TbTypeTemplate> page= (Page<TbTypeTemplate>)typeTemplateMapper.selectByExample(example);
+
+		saveToRedis();
+
+
 		return new PageResult(page.getTotal(), page.getResult());
 	}
 
