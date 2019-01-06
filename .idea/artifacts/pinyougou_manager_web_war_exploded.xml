@@ -56,6 +56,9 @@
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.6.7" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.6.0" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.6.7" />
+          <element id="archive" name="pinyougou-search-interface-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="pinyougou-search-interface" />
+          </element>
           <element id="archive" name="pinyougou-contet-interface-1.0-SNAPSHOT.jar">
             <element id="module-output" name="pinyougou-contet-interface" />
           </element>
@@ -75,6 +78,9 @@
           <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:4.1.0.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-config:4.1.0.RELEASE" />
+          <element id="archive" name="pinyougou-page-interface-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="pinyougou-page-interface" />
+          </element>
         </element>
       </element>
       <element id="directory" name="META-INF">

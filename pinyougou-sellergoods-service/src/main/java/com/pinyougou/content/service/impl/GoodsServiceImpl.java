@@ -1,4 +1,6 @@
 package com.pinyougou.content.service.impl;
+
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +16,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.pinyougou.pojo.TbGoodsExample.Criteria;
 import com.pinyougou.content.service.GoodsService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -258,5 +261,19 @@ public class GoodsServiceImpl implements GoodsService {
 		}
 
 	}
+
+
+	//添加索引库
+
+	@Override
+	public List<TbItem> findItemListByGoodsIdandStatus(Long[] goodsIds, String status){
+		TbItemExample example=new TbItemExample();
+		TbItemExample.Criteria criteria = example.createCriteria();
+		criteria.andGoodsIdNotIn(Arrays.asList(goodsIds));
+		criteria.andStatusEqualTo(status);
+		return tbItemMapper.selectByExample(example);
+	}
+
+
 
 }

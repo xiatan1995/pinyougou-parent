@@ -15,7 +15,9 @@ public interface ItemSearchService {
 
     public Map search(Map seach);
 
+    public void importList(List list);
 
+    public void deleteByGoodsIds(List goodsIdList);
 
 
 }
