@@ -16,8 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-@Service(timeout = 5000)
+@Service
 public class ItemSearchServiceImpl implements ItemSearchService {
 
 
