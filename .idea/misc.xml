@@ -26,6 +26,7 @@
       <set>
         <option value="$PROJECT_DIR$/StringBoot_dome/pom.xml" />
         <option value="$PROJECT_DIR$/dame/pom.xml" />
+        <option value="$PROJECT_DIR$/pinyougou-cart-web/pom.xml" />
         <option value="$PROJECT_DIR$/pinyougou-content-service/pom.xml" />
         <option value="$PROJECT_DIR$/pinyougou-contet-service/pom.xml" />
         <option value="$PROJECT_DIR$/string-scurity-dome/pom.xml" />

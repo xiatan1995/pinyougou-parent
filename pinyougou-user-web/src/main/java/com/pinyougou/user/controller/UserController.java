@@ -1,14 +1,18 @@
 package com.pinyougou.user.controller;
+import java.util.Date;
 import java.util.List;
 
 import com.pinyougou.entity.PageResult;
 import com.pinyougou.entity.Result;
 import com.pinyougou.user.service.UserService;
+
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.pojo.TbUser;
+import util.PhoneFormatCheckUtils;
 
 
 /**
@@ -48,8 +52,17 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping("/add")
-	public Result add(@RequestBody TbUser user){
+	public Result add(@RequestBody TbUser user,String smscode){
 		try {
+
+			boolean b = userService.checkSmsCode(user.getPhone(), smscode);
+
+			if (b==false){
+
+				return new Result(false,"验证码输入错误！！！！！！");
+			}
+
+
 			userService.add(user);
 			return new Result(true, "增加成功");
 		} catch (Exception e) {
@@ -111,5 +124,28 @@ public class UserController {
 	public PageResult search(@RequestBody TbUser user, int page, int rows  ){
 		return userService.findPage(user, page, rows);		
 	}
+
+	/**
+	 * 短信验证码功能
+	 * @param phone
+	 * @return
+	 */
+	@RequestMapping("/sendCode")
+	private Result sendCode(String phone){
+
+		//判断手机号格式是否正确
+		if(!PhoneFormatCheckUtils.isChinaPhoneLegal(phone)){
+			return new Result(false,"输入手机号有误");
+		}
+		try {
+			userService.createSmsCode(phone);
+			return new Result(false,"验证码发送成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result(false,"验证码发送失败");
+
+		}
+	}
+
 	
 }

@@ -1,8 +1,11 @@
 package com.pinyougou.user.service.impl;
+import java.util.Date;
 import java.util.List;
 
 import com.pinyougou.entity.PageResult;
+import com.pinyougou.entity.Result;
 import com.pinyougou.user.service.UserService;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
@@ -11,8 +14,7 @@ import com.pinyougou.mapper.TbUserMapper;
 import com.pinyougou.pojo.TbUser;
 import com.pinyougou.pojo.TbUserExample;
 import com.pinyougou.pojo.TbUserExample.Criteria;
-
-
+import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * 服务实现层
@@ -48,7 +50,13 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public void add(TbUser user) {
-		userMapper.insert(user);		
+
+		user.setCreated(new Date());//用户注册时间
+		user.setUpdated(new Date());//用户修改时间
+		user.setSourceType("1");//用户注册来
+		user.setPassword(DigestUtils.md5Hex(user.getPassword()));//密码加密
+
+		userMapper.insert(user);
 	}
 
 	
@@ -134,5 +142,39 @@ public class UserServiceImpl implements UserService {
 		Page<TbUser> page= (Page<TbUser>)userMapper.selectByExample(example);		
 		return new PageResult(page.getTotal(), page.getResult());
 	}
-	
+
+
+	@Autowired
+	private RedisTemplate redisTemplate;
+
+	@Override
+	public void createSmsCode(String phone) {
+		//生成6位随机数当作验证码
+
+		String code=(long)(Math.random()*1000000)+"";
+
+		//打印验证码
+		System.out.println(code);
+
+		//存入缓存
+		redisTemplate.boundHashOps("smscode").put(phone,code);
+
+	}
+
+	@Override
+	public boolean checkSmsCode(String phone, String code) {
+
+		String smscode = (String) redisTemplate.boundHashOps("smscode").get(phone);
+
+		if (smscode==null){
+
+			return false;
+		}
+		if (code.equals(smscode)){
+
+			return true;
+		}
+		return false;
+	}
+
 }

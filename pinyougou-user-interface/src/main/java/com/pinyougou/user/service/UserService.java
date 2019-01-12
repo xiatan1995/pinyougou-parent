@@ -2,6 +2,7 @@ package com.pinyougou.user.service;
 import java.util.List;
 
 import com.pinyougou.entity.PageResult;
+import com.pinyougou.entity.Result;
 import com.pinyougou.pojo.TbUser;
 
 
@@ -59,5 +60,13 @@ public interface UserService {
 	 * @return
 	 */
 	public PageResult findPage(TbUser user, int pageNum, int pageSize);
+
+	/**
+	 * 短信验证码功能
+	 * @param phone
+	 */
+	void createSmsCode(String phone);
+
+	public boolean checkSmsCode(String phone,String code);
 	
 }
